@@ -50,6 +50,60 @@ In this case this code looks really simple. When the "d" reaches the value 1.0, 
 
 # Solutions
 ## Exercise 1
+#### Why the method _firstMultipleCharacter_ is returning "c" for the word _comprehensive_, when the correct answer should be "e"?
+Because the method *find()* is comparing every letter with itself, therefore returning every letter to find itself, since it only returns the first one, it gives out "c".
+To fix we must add one to the position of the argument:
+```java
+private int find(char c, int pos)
+    {
+        for (int i = pos+1; i < word.length(); i++) //pos +1
+        {
+            if (word.charAt(i) == c)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+```
+#### Why the method _firstRepeatedCharacter_ is throwing an exception?
+This is because the method was comparing each letter to the one after, until the last. If we do every single letter but the last we get to stay within our range:
+```java
+ public char firstRepeatedCharacter()
+    {
+        for (int i = 0; i < word.length()-1; i++) // word.length()-1
+        {
+            char ch = word.charAt(i);
+            if (ch == word.charAt(i + 1))
+                return ch;
+        }
+        return 0;
+    }
+```
+#### Why the method _countGroupsRepeatedCharacters_ returns 3 in one case when it should be 4?
+This is because the array is starting at the second letter to avoid a null exception of -1. This can be fixed by adding an if statement and starting at i=0:
+```java
+ public int countGroupsRepeatedCharacters()
+    {
+        int c = 0;
+        for (int i = 0; i < word.length() - 1; i++) // 1 = 0 
+        {
+            if (word.charAt(i) == word.charAt(i + 1)) // found a repetition
+            {
+                if (i != 0) {                           //checking if its the first letter
+                    
+                
+                if (word.charAt(i - 1) != word.charAt(i)) // it't the start
+                    c++;
+                }
+                else{
+                    c++;
+                }
+            }
+        }
+        return c;
+    }
+```
 
 ## Exercise 2
 In this exercise we are messing with 2 different *boards* (hashMaps) where the first has 2,000,000 size and the second 1,500,000 size. Since the amount of bombs in both case is either 1,499,999 or 1,500,000, this represents a bigger portion of the Blue board (second) therefore it is innificient to fill it up choosing random numbers. This is why it would be more efficient if the filling up of the board was already done with the mines and the mining process becomes the empty spaces of the board. This can be done by changing some of the code as follows:
@@ -101,3 +155,21 @@ public static void settingTheBoard(int size) {
     }
 ```
 this way the roles of the functions is switched but the variables names continue the same.
+
+## Exercise 3
+The problem here is how doubles work in java. Therefore the double representation of 1 = 0.9999999999999... 
+One way of tackling he issue was instead of checking if it is the same exact value, I checked if the difference between it was extremely small, which it was and it worked:
+```java
+public class Main {
+
+    public static void main(String [] args) {
+        double d = 0.0;
+
+        while (d - 1.0 < 0.0000001) {
+            d += 0.10;
+        }
+
+        System.out.println("d is 1");
+    }
+}
+```
