@@ -47,3 +47,57 @@ In this case this code looks really simple. When the "d" reaches the value 1.0, 
 
 #### Why does not appear a message indicating that "d is 1"?
 #### How will you fix it?
+
+# Solutions
+## Exercise 1
+
+## Exercise 2
+In this exercise we are messing with 2 different *boards* (hashMaps) where the first has 2,000,000 size and the second 1,500,000 size. Since the amount of bombs in both case is either 1,499,999 or 1,500,000, this represents a bigger portion of the Blue board (second) therefore it is innificient to fill it up choosing random numbers. This is why it would be more efficient if the filling up of the board was already done with the mines and the mining process becomes the empty spaces of the board. This can be done by changing some of the code as follows:
+#### from
+```java
+public static void settingTheBoard(int size) {
+        // Setting the board
+        myBoard = new HashMap<>();
+
+        for(int i = 0; i < size; i++) {
+            myBoard.put(i, new Space());
+        }
+    }
+
+    public static void minningTheBoard(int numberMines) {
+        Random random = new Random();
+        while (numberMines > 0) {
+            Integer trial = new Integer(random.nextInt(myBoard.size()));
+
+            if (myBoard.get(trial) instanceof Space) {
+                myBoard.put(trial, new Mine());
+                numberMines--;
+            }
+        }
+    }
+```
+#### to
+```java
+public static void settingTheBoard(int size) {
+        // Setting the board
+        myBoard = new HashMap<>();
+
+        for(int i = 0; i < size; i++) {
+            myBoard.put(i, new Mine());
+        }
+    }
+
+    public static void minningTheBoard(int numberMines) {
+        numberMines = myBoard.size() - numberMines;
+        Random random = new Random();
+        while (numberMines > 0) {
+            Integer trial = new Integer(random.nextInt(myBoard.size()));
+
+            if (myBoard.get(trial) instanceof Mine) {
+                myBoard.put(trial, new Space());
+                numberMines--;
+            }
+        }
+    }
+```
+this way the roles of the functions is switched but the variables names continue the same.
